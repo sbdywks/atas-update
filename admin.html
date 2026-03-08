@@ -394,6 +394,20 @@ code{background:rgba(0,212,255,.08);color:var(--accent);padding:2px 6px;border-r
           <div class="field"><label>公告消息（留空则不显示）</label><input type="text" id="sys-message" placeholder="输入给所有用户的通知..." oninput="markSysDirty()"/></div>
         </div>
       </div>
+
+      <div class="card" style="margin-top:16px">
+        <div class="card-header">🌐 下载代理管理</div>
+        <div class="card-body">
+          <p style="color:#94a3b8;font-size:13px;margin-bottom:12px">脚本下载文件时按顺序尝试代理，填代理前缀即可，每行一个。内置备用代理始终保留。</p>
+          <div class="field"><label>代理列表（每行一个）</label>
+          <textarea id="sys-proxies" rows="4" style="width:100%;resize:vertical;font-family:monospace;font-size:12px;background:#0d1117;border:1px solid #30363d;color:#e6edf3;padding:8px;border-radius:6px" placeholder="https://ghfast.top/https://raw.githubusercontent.com&#10;https://gh-proxy.com/https://raw.githubusercontent.com"></textarea></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+            <button class="btn btn-primary" onclick="saveProxies()">💾 保存代理</button>
+            <button class="btn btn-ghost" onclick="testProxies()">🔍 测试连通性</button>
+          </div>
+          <div id="proxy-test-result" style="margin-top:10px;font-size:12px;line-height:1.8"></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -507,7 +521,7 @@ async function loadAll(){
     let [lics,users,ctrl]=await Promise.all([loadFile('licenses.json'),loadFile('users.json'),loadFile('control.json')]);
     LICENSES=lics||[];
     USERS=users||[];
-    CONTROL=ctrl||{dll_version:'1.0.0',dll_md5:'',launcher_version:'1.0.0',launcher_md5:'',force_update_dll:false,force_update_launcher:false,force_delete_k:false,disabled:false,message:''};
+    CONTROL=ctrl||{dll_version:'1.0.0',dll_md5:'',launcher_version:'1.0.0',launcher_md5:'',force_update_dll:false,force_update_launcher:false,force_delete_k:false,disabled:false,message:'',proxies:''};
     renderAll();
     setStatus('ok','Connected');
   }catch(e){
@@ -561,6 +575,8 @@ function renderLicenses(){
     <td>${badgeStatus(l)}</td>
     <td><div class="action-group">
       <button class="btn btn-ghost btn-sm" onclick="editLic('${l.id}')">修改</button>
+      <button class="btn btn-sm" style="background:#1a5c2a;color:#4ade80;border:1px solid #4ade80" onclick="renewLic('${l.id}',30)">+30天</button>
+      <button class="btn btn-sm" style="background:#1a3a5c;color:#60a5fa;border:1px solid #60a5fa" onclick="renewLic('${l.id}',90)">+90天</button>
       <button class="btn btn-warn btn-sm" onclick="unbindLic('${l.id}')">解绑</button>
       <button class="btn btn-danger btn-sm" onclick="deleteLic('${l.id}')">删除</button>
     </div></td>
@@ -726,6 +742,40 @@ function renderSystem(){
   document.getElementById('sw-disabled').checked=!!CONTROL.disabled;
   document.getElementById('sw-delete-k').checked=!!CONTROL.force_delete_k;
   document.getElementById('sys-message').value=CONTROL.message||'';
+  let proxyDisplay=(CONTROL.proxies||'').split(',').map(p=>p.trim()).filter(p=>p).join('\n');
+  document.getElementById('sys-proxies').value=proxyDisplay;
+}
+
+async function saveProxies(){
+  let raw=document.getElementById('sys-proxies').value;
+  CONTROL.proxies=raw.split('\n').map(p=>p.trim()).filter(p=>p).join(',');
+  try{
+    await saveFile('control.json',CONTROL,'Update proxies');
+    showAlert('✅ 代理已保存，立即生效','success');
+  }catch(e){showAlert('保存失败: '+e.message,'error');}
+}
+
+async function testProxies(){
+  let raw=document.getElementById('sys-proxies').value;
+  let proxies=raw.split('\n').map(p=>p.trim()).filter(p=>p);
+  if(!proxies.length){showAlert('请先填写代理地址','error');return;}
+  let res=document.getElementById('proxy-test-result');
+  res.innerHTML='<span style="color:#94a3b8">测试中，请稍候...</span>';
+  let results=[];
+  for(let p of proxies){
+    let testUrl=p+'/'+GH_USER+'/'+GH_REPO+'/main/control.json';
+    let t=Date.now();
+    try{
+      let r=await fetch(testUrl,{signal:AbortSignal.timeout(6000)});
+      let ms=Date.now()-t;
+      results.push(r.ok
+        ? '<span style="color:#4ade80">✅ '+p.substring(0,55)+'... ('+ms+'ms)</span>'
+        : '<span style="color:#fb923c">⚠️ '+p.substring(0,55)+'... HTTP '+r.status+' ('+ms+'ms)</span>');
+    }catch(e){
+      results.push('<span style="color:#f87171">❌ '+p.substring(0,55)+'... 连接失败</span>');
+    }
+  }
+  res.innerHTML=results.join('<br>');
 }
 
 // ── License Actions ────────────────────────────────────────
@@ -766,6 +816,20 @@ async function saveLicEdit(){
     await saveFile('licenses.json',LICENSES,'Edit license '+id);
     closeModal('modal-lic');renderAll();showAlert('✅ 已保存','success');
   }catch(e){showAlert('保存失败: '+e.message,'error')}
+}
+
+async function renewLic(id, days){
+  let l=LICENSES.find(x=>x.id===id);
+  if(!l)return;
+  // If already expired, renew from today; otherwise extend from current expiry
+  let base = isExpired(l.expires_at) ? new Date() : new Date(l.expires_at);
+  base.setDate(base.getDate() + days);
+  l.expires_at = base.toISOString();
+  try{
+    await saveFile('licenses.json',LICENSES,'Renew license '+l.code.substring(0,8)+' +'+days+'d');
+    renderLicenses();
+    showAlert('✅ 已续期 '+days+' 天，到期：'+base.toISOString().split('T')[0],'success');
+  }catch(e){showAlert('续期失败: '+e.message,'error');}
 }
 
 async function unbindLic(id){
@@ -861,6 +925,7 @@ async function saveSystem(){
   CONTROL.disabled=document.getElementById('sw-disabled').checked;
   CONTROL.force_delete_k=document.getElementById('sw-delete-k').checked;
   CONTROL.message=document.getElementById('sys-message').value;
+  CONTROL.proxies=document.getElementById('sys-proxies').value.split('\n').map(p=>p.trim()).filter(p=>p).join(',');
   try{
     await saveFile('control.json',CONTROL,'Update system control');
     sysDirty=false;document.getElementById('save-bar').classList.remove('show');
