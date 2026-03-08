@@ -61,6 +61,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
 .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
 .badge-success{background:rgba(0,230,118,.12);color:var(--success);border:1px solid rgba(0,230,118,.2)}
 .badge-warn{background:rgba(255,184,0,.12);color:var(--warn);border:1px solid rgba(255,184,0,.2)}
+.badge-info{background:rgba(0,160,255,.12);color:#00a0ff;border:1px solid rgba(0,160,255,.2)}
 .badge-muted{background:rgba(61,80,104,.2);color:var(--muted);border:1px solid rgba(61,80,104,.3)}
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px}
@@ -487,8 +488,8 @@ function renderDashboard(){
 }
 function badgeStatus(l){
   if(isExpired(l.expires_at))return '<span class="badge badge-warn">已过期</span>';
-  if(l.machine_id)return '<span class="badge badge-success">有效</span>';
-  return '<span class="badge badge-muted">未绑定</span>';
+  if(l.machine_id)return '<span class="badge badge-success">✓ 有效</span>';
+  return '<span class="badge badge-info">未绑定</span>';
 }
 function renderLicenses(){
   document.getElementById('lic-body').innerHTML=LICENSES.length?LICENSES.map(l=>`<tr>
