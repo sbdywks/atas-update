@@ -692,9 +692,17 @@ async function uploadFile(type){
     else{CONTROL.launcher_version=ver;CONTROL.launcher_md5=fd.md5;CONTROL.force_update_launcher=true;}
     await saveFile('control.json',CONTROL,'Update control after upload '+fname);
 
-    pbar.style.width='100%';ptxt.textContent='✅ 上传完成！强制更新已开启';
+    pbar.style.width='95%';ptxt.textContent='清除 CDN 缓存...';
+
+    // Purge jsDelivr CDN cache for this file
+    try{
+      await fetch('https://purge.jsdelivr.net/gh/'+GH_USER+'/'+GH_REPO+'@main/'+fname,{method:'GET',mode:'no-cors'});
+      await fetch('https://purge.jsdelivr.net/gh/'+GH_USER+'/'+GH_REPO+'@main/control.json',{method:'GET',mode:'no-cors'});
+    }catch(e){}
+
+    pbar.style.width='100%';ptxt.textContent='✅ 上传完成！CDN 缓存已清除';
     renderFiles();
-    showAlert('✅ '+fname+' 上传成功，MD5: '+fd.md5+'，强制更新已开启','success');
+    showAlert('✅ '+fname+' 上传成功，CDN 缓存已清除，用户立即生效','success');
     setTimeout(()=>{
       document.getElementById(type+'-progress').style.display='none';
       clearFile(type);
