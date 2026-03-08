@@ -552,7 +552,7 @@ function badgeStatus(l){
 function renderLicenses(){
   let tb=document.getElementById('lic-body');
   tb.innerHTML=LICENSES.length?LICENSES.map(l=>`<tr>
-    <td class="mono" style="font-size:11px">${l.code}</td>
+    <td class="mono" style="font-size:11px;cursor:pointer" title="点击复制" onclick="navigator.clipboard.writeText('${l.code}');showAlert('✅ 已复制授权码','success')">${l.code} 📋</td>
     <td>${l.user_name||'—'}</td>
     <td class="mono" style="font-size:10px;color:var(--accent)">${l.machine_id||'<span style="color:var(--muted)">未绑定</span>'}</td>
     <td style="font-size:11px">${fmtDate(l.created_at)}</td>
