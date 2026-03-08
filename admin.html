@@ -462,6 +462,8 @@ async function loadFile(name){
 }
 async function saveFile(name,data,msg){
   let key=name.replace('.json','');
+  // Always fetch the latest SHA before saving to avoid conflicts
+  try{let f=await ghGet(name);SHAS[key]=f.sha;}catch(e){}
   let r=await ghPut(name,JSON.stringify(data,null,2),SHAS[key],msg);
   SHAS[key]=r.content.sha;
 }
