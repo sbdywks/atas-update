@@ -1,9 +1,9 @@
 {
-  "dll_version": "1.0.0",
-  "dll_md5": "在这里填OFT.Okx.dll的MD5",
+  "dll_version": "2026-03-08",
+  "dll_md5": "481c828e6af0ccd10e02d0656abb7cbd",
   "launcher_version": "2026-03-08",
   "launcher_md5": "fcfd32dabf66cd5da2a29356eae14030",
-  "force_update_dll": false,
+  "force_update_dll": true,
   "force_update_launcher": true,
   "force_delete_k": false,
   "disabled": false,
