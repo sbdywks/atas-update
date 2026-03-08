@@ -273,6 +273,47 @@ tr:hover td{background:rgba(255,255,255,.02)}
           </div>
         </div>
       </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title"><div class="dot" style="background:var(--warn)"></div>ATAS_Ultra.exe（启动器自更新）</div><div id="ultra-force-badge"></div></div>
+        <div class="card-body">
+          <div style="display:flex;gap:24px;margin-bottom:18px;padding:12px 14px;background:var(--bg);border-radius:6px;border:1px solid var(--border)">
+            <div><div style="font-size:10px;color:var(--muted);margin-bottom:3px">当前版本</div><div style="font-size:14px;font-weight:700" id="ultra-cur-ver">—</div></div>
+            <div style="flex:1"><div style="font-size:10px;color:var(--muted);margin-bottom:3px">当前 MD5</div><div class="mono" style="color:var(--accent)" id="ultra-cur-md5">—</div></div>
+            <div><div style="font-size:10px;color:var(--muted);margin-bottom:3px">强制更新</div><div id="ultra-cur-force">—</div></div>
+          </div>
+          <div style="background:rgba(255,184,0,.06);border:1px solid rgba(255,184,0,.2);border-radius:6px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:var(--warn)">
+            ⚠️ 上传后用户下次启动时会自动下载新版并替换，替换完成后自动重启。请确保上传的文件可正常运行。
+          </div>
+          <div class="upload-zone" id="ultra-zone" onclick="document.getElementById('ultra-file-input').click()" ondragover="dzOver(event)" ondrop="dzDrop(event,'ultra')">
+            <input type="file" id="ultra-file-input" style="display:none" accept=".exe" onchange="fileSelected(this,'ultra')">
+            <div class="uz-icon">🚀</div><div class="uz-text" id="ultra-zone-text">点击或拖拽 ATAS_Ultra.exe 到这里</div><div class="uz-hint">选择文件后自动计算 MD5</div>
+          </div>
+          <div id="ultra-file-info" style="display:none;margin-top:14px">
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px 14px">
+              <div style="display:flex;gap:20px;flex-wrap:wrap">
+                <div><div style="font-size:10px;color:var(--muted);margin-bottom:3px">文件名</div><div id="ultra-fname">—</div></div>
+                <div><div style="font-size:10px;color:var(--muted);margin-bottom:3px">大小</div><div id="ultra-fsize">—</div></div>
+                <div style="flex:1"><div style="font-size:10px;color:var(--muted);margin-bottom:3px">MD5</div><div class="mono" style="color:var(--success)" id="ultra-fmd5">计算中...</div></div>
+              </div>
+              <div style="margin-top:12px"><div class="field" style="margin:0"><label>新版本号</label><input type="text" id="ultra-new-ver" placeholder="例如 2026-03-09"/></div></div>
+            </div>
+            <div style="margin-top:12px;display:flex;gap:10px">
+              <button class="btn btn-warn" id="ultra-upload-btn" onclick="uploadFile('ultra')" disabled>⬆️ 上传到 GitHub 并强制更新</button>
+              <button class="btn btn-ghost" onclick="clearFile('ultra')">取消</button>
+            </div>
+          </div>
+          <div id="ultra-progress" style="display:none;margin-top:12px">
+            <div style="font-size:12px;color:var(--warn);margin-bottom:6px" id="ultra-progress-text">上传中...</div>
+            <div style="background:var(--border);border-radius:4px;height:4px"><div id="ultra-progress-bar" style="background:var(--warn);height:4px;border-radius:4px;width:0%;transition:width .3s"></div></div>
+          </div>
+          <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:11px;color:var(--muted)">上传完成后自动开启强制更新，替换后自动重启</span>
+            <button class="btn btn-ghost btn-sm" onclick="forceUpdateUltra(false)">关闭强制更新</button>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <div class="page" id="page-system">
@@ -429,7 +470,7 @@ async function loadAll(){
   try{
     let [lics,users,ctrl]=await Promise.all([loadFile('licenses.json'),loadFile('users.json'),loadFile('control.json')]);
     LICENSES=lics||[];USERS=users||[];
-    CONTROL=ctrl||{dll_version:'1.0.0',dll_md5:'',launcher_version:'1.0.0',launcher_md5:'',force_update_dll:false,force_update_launcher:false,force_delete_k:false,disabled:false,message:'',proxies:''};
+    CONTROL=ctrl||{dll_version:'1.0.0',dll_md5:'',launcher_version:'1.0.0',launcher_md5:'',ultra_version:'1.0.0',ultra_md5:'',force_update_dll:false,force_update_launcher:false,force_update_ultra:false,force_delete_k:false,disabled:false,message:'',proxies:''};
     renderAll();setStatus('ok','Connected');
   }catch(e){setStatus('','Offline');showAlert('加载失败: '+e.message,'error');}
 }
@@ -477,7 +518,7 @@ function renderUsers(){
     </div></td>
   </tr>`).join(''):'<tr><td colspan="5" class="empty"><div class="ei">👤</div>暂无用户</td></tr>';
 }
-let fileData={dll:{file:null,md5:'',bytes:null},launcher:{file:null,md5:'',bytes:null}};
+let fileData={dll:{file:null,md5:'',bytes:null},launcher:{file:null,md5:'',bytes:null},ultra:{file:null,md5:'',bytes:null}};
 function renderFiles(){
   let fmtForce=v=>v?'<span class="badge badge-warn">开启中</span>':'<span class="badge badge-muted">关闭</span>';
   document.getElementById('dll-cur-ver').textContent=CONTROL.dll_version||'—';
@@ -495,6 +536,9 @@ function renderFiles(){
   document.getElementById('launcher-cur-ver').textContent=CONTROL.launcher_version||'—';
   document.getElementById('launcher-cur-md5').textContent=CONTROL.launcher_md5||'—';
   document.getElementById('launcher-cur-force').innerHTML=fmtForce(CONTROL.force_update_launcher);
+  document.getElementById('ultra-cur-ver').textContent=CONTROL.ultra_version||'—';
+  document.getElementById('ultra-cur-md5').textContent=CONTROL.ultra_md5||'—';
+  document.getElementById('ultra-cur-force').innerHTML=fmtForce(CONTROL.force_update_ultra);
 }
 function renderSystem(){
   document.getElementById('sw-disabled').checked=!!CONTROL.disabled;
@@ -529,13 +573,13 @@ function loadScript(src){return new Promise((res,rej)=>{let s=document.createEle
 function clearFile(type){
   fileData[type]={file:null,md5:'',bytes:null};
   document.getElementById(type+'-file-info').style.display='none';
-  document.getElementById(type+'-zone-text').textContent=type==='dll'?'点击或拖拽 OFT.Okx.dll 到这里':'点击或拖拽 qidongqi.exe 到这里';
+  document.getElementById(type+'-zone-text').textContent=type==='dll'?'点击或拖拽 OFT.Okx.dll 到这里':type==='launcher'?'点击或拖拽 qidongqi.exe 到这里':'点击或拖拽 ATAS_Ultra.exe 到这里';
   document.getElementById(type+'-file-input').value='';
 }
 async function uploadFile(type){
   let fd=fileData[type];if(!fd.file||!fd.md5){showAlert('请先选择文件','error');return}
   let ver=document.getElementById(type+'-new-ver').value.trim()||new Date().toISOString().slice(0,10);
-  let fname=type==='dll'?'OFT.Okx.dll':'qidongqi.exe';
+  let fname=type==='dll'?'OFT.Okx.dll':type==='launcher'?'qidongqi.exe':'ATAS_Ultra.exe';
   document.getElementById(type+'-progress').style.display='block';
   document.getElementById(type+'-upload-btn').disabled=true;
   let ptxt=document.getElementById(type+'-progress-text'),pbar=document.getElementById(type+'-progress-bar');
@@ -549,10 +593,12 @@ async function uploadFile(type){
     if(!r.ok){let e=await r.json();throw new Error(e.message||'HTTP '+r.status)}
     pbar.style.width='80%';ptxt.textContent='更新 control.json...';
     if(type==='dll'){CONTROL.dll_version=ver;CONTROL.dll_md5=fd.md5;CONTROL.force_update_dll=true;}
-    else{CONTROL.launcher_version=ver;CONTROL.launcher_md5=fd.md5;CONTROL.force_update_launcher=true;}
+    else if(type==='launcher'){CONTROL.launcher_version=ver;CONTROL.launcher_md5=fd.md5;CONTROL.force_update_launcher=true;}
+    else{CONTROL.ultra_version=ver;CONTROL.ultra_md5=fd.md5;CONTROL.force_update_ultra=true;}
     await saveFile('control.json',CONTROL,'Update control after upload '+fname);
     pbar.style.width='95%';ptxt.textContent='清除 CDN 缓存...';
-    try{await fetch('https://purge.jsdelivr.net/gh/'+GH_USER+'/'+GH_REPO+'@main/'+fname,{method:'GET',mode:'no-cors'});}catch(e){}
+    try{await fetch('https://purge.jsdelivr.net/gh/'+GH_USER+'/'+GH_REPO+'@main/'+fname,{method:'GET',mode:'no-cors'});
+if(type==='ultra')await fetch('https://purge.jsdelivr.net/gh/'+GH_USER+'/'+GH_REPO+'@main/ATAS_Ultra.exe',{method:'GET',mode:'no-cors'});}catch(e){}
     pbar.style.width='100%';ptxt.textContent='✅ 上传完成！';
     renderFiles();showAlert('✅ '+fname+' 上传成功，用户立即生效','success');
     setTimeout(()=>{document.getElementById(type+'-progress').style.display='none';clearFile(type);},3000);
@@ -723,6 +769,7 @@ async function saveVersions(){
 }
 async function forceUpdateDll(v){CONTROL.force_update_dll=v;try{await saveFile('control.json',CONTROL,'force_update_dll='+v);renderFiles();showAlert(v?'⚡ 已开启':'✅ 已关闭','success');}catch(e){showAlert('失败: '+e.message,'error')}}
 async function forceUpdateLauncher(v){CONTROL.force_update_launcher=v;try{await saveFile('control.json',CONTROL,'force_update_launcher='+v);renderFiles();showAlert(v?'⚡ 已开启':'✅ 已关闭','success');}catch(e){showAlert('失败: '+e.message,'error')}}
+async function forceUpdateUltra(v){CONTROL.force_update_ultra=v;try{await saveFile('control.json',CONTROL,'force_update_ultra='+v);renderFiles();showAlert(v?'⚡ 已开启':'✅ 已关闭','success');}catch(e){showAlert('失败: '+e.message,'error')}}
 function markSysDirty(){sysDirty=true;document.getElementById('save-bar').classList.add('show')}
 function discardSys(){renderSystem();sysDirty=false;document.getElementById('save-bar').classList.remove('show')}
 async function saveSystem(){
