@@ -1,0 +1,11 @@
+{
+  "dll_version": "1.0.0",
+  "dll_md5": "在这里填OFT.Okx.dll的MD5",
+  "launcher_version": "1.0.0",
+  "launcher_md5": "在这里填qidongqi.exe的MD5",
+  "force_update_dll": false,
+  "force_update_launcher": false,
+  "force_delete_k": false,
+  "disabled": false,
+  "message": ""
+}
