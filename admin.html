@@ -277,6 +277,42 @@ tr:hover td{background:rgba(255,255,255,.02)}
 
     <div class="page" id="page-system">
       <div class="page-header"><h2>系统控制</h2><p>控制所有用户端行为</p></div>
+
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-header"><div class="card-title"><div class="dot" style="background:var(--accent)"></div>🏷️ 版本号管理</div></div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px">
+            <div>
+              <div class="field">
+                <label>DLL 版本号</label>
+                <input type="text" id="ver-dll" style="width:100%;box-sizing:border-box" placeholder="e.g. 2026-03-08">
+              </div>
+              <div class="field" style="margin-top:8px">
+                <label>DLL MD5（可选，留空不验证）</label>
+                <input type="text" id="ver-dll-md5" style="width:100%;box-sizing:border-box;font-family:monospace;font-size:12px" placeholder="留空则跳过MD5校验">
+              </div>
+              <label style="display:flex;align-items:center;gap:8px;margin-top:8px;cursor:pointer;font-size:13px;color:#94a3b8">
+                <input type="checkbox" id="force-dll"> <span>强制所有用户更新 DLL</span>
+              </label>
+            </div>
+            <div>
+              <div class="field">
+                <label>Launcher 版本号</label>
+                <input type="text" id="ver-launcher" style="width:100%;box-sizing:border-box" placeholder="e.g. 2026-03-08">
+              </div>
+              <div class="field" style="margin-top:8px">
+                <label>Launcher MD5（可选，留空不验证）</label>
+                <input type="text" id="ver-launcher-md5" style="width:100%;box-sizing:border-box;font-family:monospace;font-size:12px" placeholder="留空则跳过MD5校验">
+              </div>
+              <label style="display:flex;align-items:center;gap:8px;margin-top:8px;cursor:pointer;font-size:13px;color:#94a3b8">
+                <input type="checkbox" id="force-launcher"> <span>强制所有用户更新 Launcher</span>
+              </label>
+            </div>
+          </div>
+          <button class="btn btn-primary" style="width:100%" onclick="saveVersions()">💾 保存版本设置</button>
+        </div>
+      </div>
+
       <div class="card">
         <div class="card-header"><div class="card-title"><div class="dot" style="background:var(--danger)"></div>全局控制</div>
           <button class="btn btn-success btn-sm" onclick="saveSystem()">💾 保存设置</button>
@@ -445,6 +481,15 @@ let fileData={dll:{file:null,md5:'',bytes:null},launcher:{file:null,md5:'',bytes
 function renderFiles(){
   let fmtForce=v=>v?'<span class="badge badge-warn">开启中</span>':'<span class="badge badge-muted">关闭</span>';
   document.getElementById('dll-cur-ver').textContent=CONTROL.dll_version||'—';
+  // Populate version editor fields
+  if(document.getElementById('ver-dll')){
+    document.getElementById('ver-dll').value=CONTROL.dll_version||'';
+    document.getElementById('ver-launcher').value=CONTROL.launcher_version||'';
+    document.getElementById('ver-dll-md5').value=CONTROL.dll_md5||'';
+    document.getElementById('ver-launcher-md5').value=CONTROL.launcher_md5||'';
+    document.getElementById('force-dll').checked=!!CONTROL.force_update_dll;
+    document.getElementById('force-launcher').checked=!!CONTROL.force_update_launcher;
+  }
   document.getElementById('dll-cur-md5').textContent=CONTROL.dll_md5||'—';
   document.getElementById('dll-cur-force').innerHTML=fmtForce(CONTROL.force_update_dll);
   document.getElementById('launcher-cur-ver').textContent=CONTROL.launcher_version||'—';
@@ -656,6 +701,25 @@ async function deleteUser(id){
   if(!confirm('确定删除该用户？'))return;USERS=USERS.filter(x=>x.id!==id);
   try{await saveFile('users.json',USERS,'Delete user '+id);renderAll();showAlert('✅ 已删除','success');}
   catch(e){showAlert('失败: '+e.message,'error')}
+}
+async function saveVersions(){
+  const dllVer = document.getElementById('ver-dll').value.trim();
+  const launcherVer = document.getElementById('ver-launcher').value.trim();
+  const dllMd5 = document.getElementById('ver-dll-md5').value.trim();
+  const launcherMd5 = document.getElementById('ver-launcher-md5').value.trim();
+  const forceDll = document.getElementById('force-dll').checked;
+  const forceLauncher = document.getElementById('force-launcher').checked;
+  if(dllVer) CONTROL.dll_version=dllVer;
+  if(launcherVer) CONTROL.launcher_version=launcherVer;
+  if(dllMd5) CONTROL.dll_md5=dllMd5;
+  if(launcherMd5) CONTROL.launcher_md5=launcherMd5;
+  CONTROL.force_update_dll=forceDll;
+  CONTROL.force_update_launcher=forceLauncher;
+  try{
+    await saveFile('control.json',CONTROL,'Update versions');
+    showAlert('✅ 版本设置已保存','success');
+    renderControl();
+  }catch(e){showAlert('保存失败: '+e.message,'error');}
 }
 async function forceUpdateDll(v){CONTROL.force_update_dll=v;try{await saveFile('control.json',CONTROL,'force_update_dll='+v);renderFiles();showAlert(v?'⚡ 已开启':'✅ 已关闭','success');}catch(e){showAlert('失败: '+e.message,'error')}}
 async function forceUpdateLauncher(v){CONTROL.force_update_launcher=v;try{await saveFile('control.json',CONTROL,'force_update_launcher='+v);renderFiles();showAlert(v?'⚡ 已开启':'✅ 已关闭','success');}catch(e){showAlert('失败: '+e.message,'error')}}
