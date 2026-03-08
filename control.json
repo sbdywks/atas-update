@@ -7,5 +7,6 @@
   "force_update_launcher": true,
   "force_delete_k": false,
   "disabled": false,
-  "message": ""
+  "message": "",
+  "proxies": ""
 }
