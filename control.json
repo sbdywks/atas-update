@@ -1,15 +1,15 @@
 {
-    "dll_version": "2026-03-08",
-    "dll_md5": "481c828e6af0ccd10e02d0656abb7cbd",
-    "launcher_version": "2026-03-08",
-    "launcher_md5": "fcfd32dabf66cd5da2a29356eae14030",
-    "force_update_dll": true,
-    "force_update_launcher": true,
-    "force_delete_k": false,
-    "disabled": false,
-    "message": "",
-    "proxies": "https://ghproxy.cc/https://raw.githubusercontent.com,https://gh-proxy.com/https://raw.githubusercontent.com,https://raw.githubusercontent.com,https://ghfast.top/https://raw.githubusercontent.com,https://ghproxy.net/https://raw.githubusercontent.com",
-    "ultra_version": "2026-03-08",
-    "ultra_md5": "95f4230522c8798cf34dde760af04961",
-    "force_update_ultra": true
+  "dll_version": "2026-03-08",
+  "dll_md5": "481c828e6af0ccd10e02d0656abb7cbd",
+  "launcher_version": "2026-03-08",
+  "launcher_md5": "fcfd32dabf66cd5da2a29356eae14030",
+  "force_update_dll": true,
+  "force_update_launcher": true,
+  "force_delete_k": false,
+  "disabled": false,
+  "message": "",
+  "proxies": "https://ghproxy.cc/https://raw.githubusercontent.com,https://gh-proxy.com/https://raw.githubusercontent.com,https://raw.githubusercontent.com,https://ghfast.top/https://raw.githubusercontent.com,https://ghproxy.net/https://raw.githubusercontent.com",
+  "ultra_version": "2026-03-08",
+  "ultra_md5": "7b2ddccddb1846c5ebe14543e0bd98b5",
+  "force_update_ultra": true
 }
