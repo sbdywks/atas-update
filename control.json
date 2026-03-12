@@ -5,19 +5,12 @@
     "launcher_version": "1.0.0",
     "launcher_md5": "",
     "force_update_launcher": false,
-    "ultra_version": "1.0.0",
-    "ultra_md5": "",
-    "force_update_ultra": false,
+    "ultra_version": "2026-03-12",
+    "ultra_md5": "e18f3debeb0e217f231e7007e182fb33",
+    "force_update_ultra": true,
     "force_delete_k": false,
     "disabled": false,
     "message": "",
     "proxies": "",
-    "extra_files": [
-        {
-            "filename": "ATASPlatform.exe",
-            "md5": "13b752874c5c66652a8fbad36e0b0b6e",
-            "update_id": "bfc598a52389d1f8",
-            "force_update": true
-        }
-    ]
+    "ultra_update_id": "54e814d644319861"
 }
