@@ -1,12 +1,16 @@
 {
     "dll_version": "1.0.0",
-    "dll_md5": "在这里填OFT.Okx.dll的MD5",
-    "launcher_version": "1.0.0",
-    "launcher_md5": "在这里填qidongqi.exe的MD5",
+    "dll_md5": "",
     "force_update_dll": false,
+    "launcher_version": "1.0.0",
+    "launcher_md5": "",
     "force_update_launcher": false,
+    "ultra_version": "2026-03-19",
+    "ultra_md5": "fd2044dc3a88fbaeb3892dc05dc6ce17",
+    "force_update_ultra": true,
     "force_delete_k": false,
     "disabled": false,
     "message": "",
-    "proxies": "https://ghproxy.cc/https://raw.githubusercontent.com,https://gh-proxy.com/https://raw.githubusercontent.com,https://raw.githubusercontent.com,https://ghfast.top/https://raw.githubusercontent.com,https://ghproxy.net/https://raw.githubusercontent.com"
+    "proxies": "",
+    "ultra_update_id": "9d969ecd31c1e587"
 }
