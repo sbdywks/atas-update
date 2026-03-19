@@ -8,5 +8,5 @@
     "force_delete_k": false,
     "disabled": false,
     "message": "",
-    "proxies": "https://gh-proxy.com/https://raw.githubusercontent.com,https://ghproxy.cc/https://raw.githubusercontent.com,https://raw.githubusercontent.com,https://ghfast.top/https://raw.githubusercontent.com,https://ghproxy.net/https://raw.githubusercontent.com"
+    "proxies": "https://ghproxy.cc/https://raw.githubusercontent.com,https://gh-proxy.com/https://raw.githubusercontent.com,https://raw.githubusercontent.com,https://ghfast.top/https://raw.githubusercontent.com,https://ghproxy.net/https://raw.githubusercontent.com"
 }
