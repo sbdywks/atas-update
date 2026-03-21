@@ -11,6 +11,6 @@
     "force_delete_k": false,
     "disabled": false,
     "message": "",
-    "proxies": "",
+    "proxies": "https://gh-proxy.com/https://raw.githubusercontent.com,https://ghproxy.cc/https://raw.githubusercontent.com,https://raw.githubusercontent.com,https://ghproxy.net/https://raw.githubusercontent.com,https://ghfast.top/https://raw.githubusercontent.com",
     "ultra_update_id": "93dd01244ddd3b28"
 }
