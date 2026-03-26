@@ -11,6 +11,12 @@
             "md5": "79c7624629cf0cfc749eb14b0283eb61",
             "force_update": true,
             "update_id": "02981e156e020e9a"
+        },
+        "ATAS_Ultra.exe": {
+            "version": "2026-03-26",
+            "md5": "b9b2f1dee4813abb8733d767822de04c",
+            "force_update": true,
+            "update_id": "be41760bbe58629b"
         }
     },
     "force_delete_k": false,
