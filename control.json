@@ -1,10 +1,10 @@
 {
     "files": {
-        "OFT.Okx.dll": {
+        "qidongqi.exe": {
             "version": "2026-03-26",
-            "md5": "cedab7c19a1d064528b206bca4f11ec7",
+            "md5": "0f7fc78d4dc7d72be76d4bae9d0cd1df",
             "force_update": true,
-            "update_id": "f62aab94e97f5144"
+            "update_id": "48a6b029bb5f5295"
         }
     },
     "force_delete_k": false,
