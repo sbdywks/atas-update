@@ -1,10 +1,10 @@
 {
     "files": {
-        "OFT.Okx.dll": {
+        "ATAS_Ultra.exe": {
             "version": "2026-03-26",
-            "md5": "36d0a72c66350b9091fbede202aa525f",
+            "md5": "b5eabf9fff134834cfaa2abad3ec2973",
             "force_update": true,
-            "update_id": "2dc24abdcd43e819"
+            "update_id": "994fb3e74ce249f5"
         }
     },
     "force_delete_k": false,
