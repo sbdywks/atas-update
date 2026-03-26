@@ -1,10 +1,10 @@
 {
     "files": {
-        "qidongqi.exe": {
+        "ATAS_Ultra.exe": {
             "version": "2026-03-26",
-            "md5": "5f60191c99aaae41248a83dad093c2c7",
+            "md5": "1d0edd4501f3f4cbe9e236a36c20c011",
             "force_update": true,
-            "update_id": "fe0e27d9672ddaf1"
+            "update_id": "6b682f1c06daa3d5"
         }
     },
     "force_delete_k": false,
