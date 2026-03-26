@@ -1,16 +1,16 @@
 {
-    "dll_version": "1.0.0",
-    "dll_md5": "",
-    "force_update_dll": false,
+    "dll_version": "2026-03-26",
+    "dll_md5": "c17e11dc1dec740816099ca891e421ee",
+    "force_update_dll": true,
     "launcher_version": "1.0.0",
     "launcher_md5": "",
     "force_update_launcher": false,
-    "ultra_version": "2026-03-19",
-    "ultra_md5": "09d67fd28ed58a609030dbc6a630b3c9",
-    "force_update_ultra": true,
+    "ultra_version": "1.0.0",
+    "ultra_md5": "",
+    "force_update_ultra": false,
     "force_delete_k": false,
     "disabled": false,
     "message": "",
     "proxies": "",
-    "ultra_update_id": "93dd01244ddd3b28"
+    "dll_update_id": "687a3171a865c1ff"
 }
