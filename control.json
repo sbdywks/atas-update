@@ -1,16 +1,16 @@
 {
-    "dll_version": "2026-03-26",
-    "dll_md5": "c17e11dc1dec740816099ca891e421ee",
-    "force_update_dll": true,
-    "launcher_version": "1.0.0",
-    "launcher_md5": "",
-    "force_update_launcher": false,
+    "dll_version": "1.0.0",
+    "dll_md5": "",
+    "force_update_dll": false,
+    "launcher_version": "2026-03-26",
+    "launcher_md5": "47c024b2d7844ced071a1a0e0b2547b3",
+    "force_update_launcher": true,
     "ultra_version": "1.0.0",
     "ultra_md5": "",
     "force_update_ultra": false,
     "force_delete_k": false,
     "disabled": false,
     "message": "",
-    "proxies": "https://ghproxy.cc/https://raw.githubusercontent.com,https://raw.githubusercontent.com,https://gh-proxy.com/https://raw.githubusercontent.com,https://ghproxy.net/https://raw.githubusercontent.com,https://ghfast.top/https://raw.githubusercontent.com",
-    "dll_update_id": "687a3171a865c1ff"
+    "proxies": "",
+    "launcher_update_id": "ec66f0539b4245ab"
 }
