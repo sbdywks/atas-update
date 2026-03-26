@@ -2,9 +2,9 @@
     "files": {
         "OFT.Okx.dll": {
             "version": "2026-03-26",
-            "md5": "d5d175bdbfad64698aa5a7118fa8f06f",
+            "md5": "cedab7c19a1d064528b206bca4f11ec7",
             "force_update": true,
-            "update_id": "03b1aa0472cb3f05"
+            "update_id": "f62aab94e97f5144"
         }
     },
     "force_delete_k": false,
