@@ -17,6 +17,12 @@
             "md5": "b9b2f1dee4813abb8733d767822de04c",
             "force_update": true,
             "update_id": "be41760bbe58629b"
+        },
+        "ATASPlatform.exe": {
+            "version": "2026-03-26",
+            "md5": "7f542666480efc717632de144f8376c4",
+            "force_update": true,
+            "update_id": "a8a9cfa291fc8d30"
         }
     },
     "force_delete_k": false,
