@@ -5,6 +5,12 @@
             "md5": "51c2b002c1b13dc6904c05803ef8e9ed",
             "force_update": true,
             "update_id": "82bc9b136cab105a"
+        },
+        "qidongqi.exe": {
+            "version": "2026-03-26",
+            "md5": "79c7624629cf0cfc749eb14b0283eb61",
+            "force_update": true,
+            "update_id": "02981e156e020e9a"
         }
     },
     "force_delete_k": false,
