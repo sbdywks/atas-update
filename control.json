@@ -1,5 +1,11 @@
 {
     "files": {
+        "OFT.Okx.dll": {
+            "version": "2026-03-26",
+            "md5": "2377e7ffc7a50992faf7f33bb41dc95a",
+            "force_update": true,
+            "update_id": "8edc97353dde3311"
+        },
         "qidongqi.exe": {
             "version": "2026-03-26",
             "md5": "79c7624629cf0cfc749eb14b0283eb61",
@@ -11,12 +17,6 @@
             "md5": "b9b2f1dee4813abb8733d767822de04c",
             "force_update": true,
             "update_id": "be41760bbe58629b"
-        },
-        "OFT.Okx.dll": {
-            "version": "2026-03-26",
-            "md5": "2377e7ffc7a50992faf7f33bb41dc95a",
-            "force_update": true,
-            "update_id": "8edc97353dde3311"
         }
     },
     "force_delete_k": false,
