@@ -6,12 +6,6 @@
             "force_update": true,
             "update_id": "8edc97353dde3311"
         },
-        "qidongqi.exe": {
-            "version": "2026-03-28",
-            "md5": "134bc397657def597b8e3efddc4ecd6f",
-            "force_update": true,
-            "update_id": "bd9025ca36aa5de0"
-        },
         "ATAS_Ultra.exe": {
             "version": "2026-03-26",
             "md5": "b9b2f1dee4813abb8733d767822de04c",
@@ -23,6 +17,12 @@
             "md5": "7f542666480efc717632de144f8376c4",
             "force_update": true,
             "update_id": "a8a9cfa291fc8d30"
+        },
+        "qidongqi.exe": {
+            "version": "2026-04-09",
+            "md5": "a13d3033b7aba0ffa2bda4182f3a78ce",
+            "force_update": true,
+            "update_id": "c21218a93e8c650d"
         }
     },
     "force_delete_k": false,
